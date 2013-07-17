@@ -1,0 +1,15 @@
+Theme               = darkblood
+RepeatSongChange    = yes
+SetScreenTitle      = no
+PlaylistFullPaths   = no
+ShowHiddenFiles     = no
+ShowTime            = yes
+ReadTags            = yes
+UseMimeMagic        = yes
+UseRCC              = yes
+UseMMap             = yes
+Allow24bitOutput    = yes
+UseRealtimePriority = yes
+Keymap              = keymap
+
+FormatString = "%(n:%n - :)\"%t\" by \"%a\"%(A: on \"%A\":)"

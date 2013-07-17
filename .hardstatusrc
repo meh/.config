@@ -1,0 +1,81 @@
+require 'json'
+require 'socket'
+require 'timeout'
+
+right '#{irssi}#{email}#{hackers}#{processor}#{temperature}#{wireless}#{battery}'
+
+def wrap (string)
+	"\005{= r}[\005{+b W}#{string}\005{= dr}] "
+end
+
+backtick :irssi, every: second do
+	notifications = File.read(File.expand_path('~/.irssi/notifications')).gsub(':', '@').split(/, /)
+
+	unless notifications.empty?
+		wrap "IRC\005{-b r}|" + notifications.map {|n|
+			"\005{+b rW}#{n}\005{-b dd}"
+		}.join(' ')
+	end
+end
+
+backtick :email, every: second do
+	socket = TCPSocket.new('localhost', '9001')
+	socket.puts '* list unread'
+
+	notifications = JSON.parse(socket.gets)
+
+	unless notifications.empty?
+		wrap "Mail\005{-b r}|" + notifications.map {|name|
+			"\005{+b rW}#{name}\005{-b dd}"
+		}.join(' ')
+	end
+end
+
+backtick :hackers, every: 5.seconds do
+end
+
+backtick :processor, every: 5.seconds do
+	wrap `(cpupower -c 0 frequency-info; cpupower -c 1 frequency-info) |
+		grep "current CPU" |
+		head -n 1 |
+		sed 's/^.*is //' |
+		sed 's/\.$//' |
+		tr -d '\n'`
+end
+
+backtick :temperature, every: 5.seconds do
+	`sensors`.match(/temp1:\s+([\d+\-.]+)/) { |m|
+		wrap(if m.to_i > 100
+			'STACCA STACCA STACC-'
+		else
+			"#{m} C"
+		end)
+	}
+end
+
+backtick :wireless, every: 5.seconds do
+	state = `iwconfig wlan0`
+
+	next if state =~ /No such device/
+
+	essid   = state.match(/ESSID:"(.*?)"/)[1]
+	quality = state.match(/Quality=(.*?) /)[1]
+
+	if quality
+		wrap "#{essid}\005{-b r}|\005{+b W}#{quality}"
+	end
+end
+
+backtick :battery, every: 5.seconds do
+	state = `acpitool -B`
+
+	next if state =~ /100\.0%/
+
+	current = state.match(/([^\s]+%.*)$/)[1].sub(/, /, "\005{-b r}|\005{+b W}")
+
+	if state.match(/discharging/i)
+		wrap "\005{-b r}v|\005{+b W}#{current}"
+	else
+		wrap "^\005{-b r}|\005{+b W}#{current}"
+	end
+end

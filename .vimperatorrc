@@ -1,0 +1,51 @@
+set editor="urxvt -e vim -R -c 'set wrap nonu'"
+set noautocomplete
+set gui=none
+set noscrollbars
+set defsearch=ddg
+let mapleader="ò"
+
+colorscheme darkblood
+
+map <C-n> :noscript toggletemp<CR>
+map <C-S-n> :noscript popup<CR>
+
+map <C-m> :set gui=menu,navigation,tabs<CR>
+map <C-S-m> :set gui=nomenu,nonavigation,notabs<CR>
+
+map <C-a> :set gui=addons<CR>
+map <C-S-a> :set gui=noaddons<CR>
+
+map <C-c> :set! browser.cache.disk.enable=false<CR>:set! browser.cache.memory.enable=false<CR>
+map <C-S-c> :set! browser.cache.disk.enable=true<CR>:set! browser.cache.memory.enable=true<CR>
+
+map <C-j> :set! javascript.enabled=false<CR>
+map <C-S-j> :set! javascript.enabled=true<CR>
+
+map <BS> :back<CR>
+map <Leader>n :nohlsearch<CR>
+
+map <C-s> :stylish toggle<CR>
+map <C-S-s> :stylish toggle<CR>
+
+map <Leader>L :readability later<CR>
+map <Leader>N :readability now<CR>
+
+command! -nargs=0 -description="Tile Tabs..." sp emenu Tile.Tile New Tab.Above
+command! -nargs=0 -description="Tile Tabs..." vs emenu Tile.Tile New Tab.Right
+command! -nargs=0 -description="Sync now"     sync emenu Tools.Sync Now
+
+map <C-Right> :tabnext<CR>
+map <C-Left>  :tabprev<CR>
+map <C-Up> :tabnext<CR>
+map <C-Down>  :tabprev<CR>
+map <C-H>     :tabprev<CR>
+map <C-L>     :tabnext<CR>
+map <C-K>     :tabprev<CR>
+map <C-J>     :tabnext<CR>
+map <S-H>     :tabprev<CR>
+map <S-L>     :tabnext<CR>
+
+loadplugins
+alias e o
+alias m tabmove

@@ -1,0 +1,172 @@
+#!/bin/bash
+
+ROOTDIR="${HOME}/.firefox-nightly"
+trap 'rm -rf "${ROOTDIR}/build"' EXIT
+
+shell_escape() {
+    echo "${1}" | while IFS= read -r;do printf '%q\n' "$REPLY";done
+}
+
+quotemeta() {
+  local REGEX='s:\(|/|\||\.|\*|\[|\]|\+|\?|\\|\):\\&:g'
+  if [ "${2}" = true ]
+  then
+    REGEX='s:&|\\|/:\\&:g'
+  fi
+
+    echo "${1}" | sed -r "${REGEX}" -
+}
+
+pacman-var() {
+  local VAR="$(quotemeta "${1}")"
+  sed -rn '/^\s*'"${VAR}"'\s*=\s*.+\s*$/s:^\s*'"${VAR}"'\s*=\s*(.+?)\s*$:\1:p' /etc/pacman.conf | tail -1
+}
+
+pacman-downloader() {
+  local DOWNLOADER="$(pacman-var XferCommand)"
+  if [ -z "${DOWNLOADER}" ]
+  then
+    echo "/usr/bin/wget --passive-ftp -c -O %o %u"
+  else
+    echo "${DOWNLOADER}"
+  fi
+}
+
+pacman-download() {
+  local OUTPUT="$(quotemeta "$(shell_escape "${1}")" true)"
+  local URI="$(quotemeta "$(shell_escape "${2}")" true)"
+  pacman-downloader | sed -r "s/%o/${OUTPUT}/g; s/%u/${URI}/g" >&2
+  eval "$(pacman-downloader | sed -r "s/%o/${OUTPUT}/g; s/%u/${URI}/g")" || exit 1
+}
+
+mkdir -p "${ROOTDIR}"
+
+L10N_LANG=en-US
+
+while getopts l: opt
+do
+  case "${opt}" in
+    l)
+      L10N_LANG="${OPTARG}"
+      ;;
+    \?)
+      exit 1
+      ;;
+  esac
+done
+
+BASE_URI="https://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-central$([ "${L10N_LANG}" != en-US ] && echo -l10n)/"
+
+echo "getting latest"
+LATEST="$(pacman-download - "${BASE_URI}" | grep -Po "firefox-.+?\\.${L10N_LANG}\\.linux-$(uname -m)\\.tar\\.bz2" | sed -r 's:^firefox-(.+?)\.'"${L10N_LANG}"'.*$:\1:g' | sort -r | head -1)"
+[ -z "${LATEST}" ] && {
+  echo "Can't find language ${L10N_LANG}"
+  exit 1
+}
+echo "getting latest checksum"
+LATEST_CHECKSUM="$(pacman-download - "${BASE_URI}/firefox-${LATEST}.${L10N_LANG}.linux-$(uname -m).checksums" | head -1 | sed -r 's:^([^ ]+?).*$:\1:g')"
+
+if [ -e "${ROOTDIR}/current_checksum" ]
+then
+  CURRENT_CHECKSUM="$(head -1 "${ROOTDIR}/current_checksum")"
+  [ "${LATEST_CHECKSUM}" == "${CURRENT_CHECKSUM}" ] && exit
+fi
+
+mkdir -p "${ROOTDIR}/build"
+__FILE__="$(readlink -f -- "$(which -- "${0}")")"
+
+pushd "${ROOTDIR}/build"
+cat <<'EOF' > firefox.install
+post_install() {
+  update-desktop-database -q
+  gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
+}
+
+post_upgrade() {
+  post_install $1
+}
+
+post_remove() {
+  post_install $1
+}
+EOF
+
+cat <<'EOF' | sed 's:@version@:'"${LATEST}"':g;s:@lang@:'"${L10N_LANG}"':g;s:@l10n@:'"$([ "${L10N_LANG}" != en-US ] && echo -l10n)"':g' > PKGBUILD
+pkgname=firefox-nightly
+pkgdesc='Standalone web browser from mozilla.org, nightly build'
+url='http://www.mozilla.org/projects/firefox'
+pkgver=@version@
+pkgrel=9999
+arch=('i686' 'x86_64')
+license=('MPL' 'GPL' 'LGPL')
+depends=('desktop-file-utils' 'libxt' 'mime-types' 'nss' 'shared-mime-info')
+install=firefox.install
+
+package() {
+  FX_SRC="firefox-${pkgver}.@lang@.linux-${CARCH}.tar.bz2"
+  FX_SRC_URI="https://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-central@l10n@/${FX_SRC}"
+
+  msg "Downloading..."
+  pacman-download "${FX_SRC}" ${FX_SRC_URI}
+  msg "Extracting..."
+  tar xf ${FX_SRC}
+  msg "Packaging..."
+
+  mkdir -p "${pkgdir}"/{usr/{bin,share/{applications,pixmaps}},opt}
+  cp -r firefox "${pkgdir}/opt/firefox-${pkgver}"
+
+  ln -s /opt/firefox-${pkgver}/firefox "${pkgdir}/usr/bin/firefox-nightly"
+  cat <<'DESKTOP' > "${srcdir}/firefox-nightly.desktop"
+[Desktop Entry]
+Name=Firefox Nightly
+GenericName=Web Browser
+Icon=firefox-nightly-icon
+Type=Application
+Categories=Application;Network;
+MimeType=text/html
+Encoding=UTF-8
+Exec=firefox-nightly %u
+Terminal=false
+MultipleArgs=false
+StartupNotify=false
+DESKTOP
+  cat <<'DESKTOP' > "${srcdir}/firefox-nightly-safe.desktop"
+[Desktop Entry]
+Name=Firefox Nightly - Safe Mode
+GenericName=Web Browser - Safe Mode
+Icon=firefox-nightly-icon
+Type=Application
+Categories=Application;Network;
+MimeType=text/html
+Encoding=UTF-8
+Exec=firefox-nightly -safe-mode %u
+Terminal=false
+MultipleArgs=false
+StartupNotify=false
+DESKTOP
+
+  install -m644 "${srcdir}"/{firefox-nightly.desktop,firefox-nightly-safe.desktop} "${pkgdir}/usr/share/applications/"
+  install -m644 "${srcdir}/firefox/icons/mozicon128.png" "${pkgdir}/usr/share/pixmaps/${pkgname}-icon.png"
+  cat <<'FIREFOX' > "${pkgdir}/usr/bin/firefox"
+#!/bin/sh
+
+firefox-nightly $@
+FIREFOX
+  chmod 0755 "${pkgdir}/usr/bin/firefox"
+}
+
+EOF
+head -40 "${__FILE__}" | tail -35 >> PKGBUILD
+
+if [ $UID = 0 ]
+then
+  makepkg --asroot || exit 1
+  pacman -U --noconfirm firefox-nightly-"${LATEST}"-9999-"$(uname -m)".pkg.tar* || exit 1
+else
+  makepkg || exit 1
+  sudo pacman -U --noconfirm firefox-nightly-"${LATEST}"-9999-"$(uname -m)".pkg.tar* || exit 1
+fi
+popd
+
+echo "${LATEST_CHECKSUM}" > "${ROOTDIR}/current_checksum"
+

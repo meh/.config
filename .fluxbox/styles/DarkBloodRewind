@@ -1,0 +1,80 @@
+# meh. Dark Blood Rewind, a new beginning.
+
+toolbar:                            raised solid
+toolbar.color:                      #000000
+
+toolbar.button:                     parentrelative
+toolbar.button.picColor:            #b21818
+toolbar.button.pressed:             raised solid
+toolbar.button.pressed.color:       #000000
+
+toolbar.label:                      sunken
+toolbar.label.color:                #000000
+toolbar.label.textColor:            #b2b2b2
+
+toolbar.windowLabel:                sunken
+toolbar.windowLabel.color:          #000000
+toolbar.windowLabel.textColor:      #b2b2b2
+
+toolbar.clock:                      sunken
+toolbar.clock.color:                #000000
+toolbar.clock.textColor:            #b21818
+
+menu.title:                         flat
+menu.title.color:                   #000000
+menu.title.textColor:               #b2b2b2
+menu.title.justify:                 center
+
+menu.frame:                         flat solid bevel1
+menu.frame.color:                   #000000
+menu.frame.textColor:               #b2b2b2
+menu.frame.justify:                 left
+
+menu.hilite:                        flat solid bevel1
+menu.hilite.textColor:              #ffffff
+menu.hilite.color:                  #b21818
+
+menu.bullet:                        triangle
+menu.bullet.position:               right
+
+window.title.focus:                 flat solid
+window.title.focus.color:           #000000
+window.title.unfocus:               flat solid
+window.title.unfocus.color:         #000000
+
+window.label.focus:                 flat
+window.label.focus.color:           #000000
+window.label.focus.textColor:       #b21818
+window.label.unfocus:               flat solid
+window.label.unfocus.color:         #000000
+window.label.unfocus.textColor:     #b2b2b2
+
+window.handle.focus:                flat solid
+window.handle.focus.color:          #b21818
+window.handle.unfocus:              flat solid
+window.handle.unfocus.color:        #b21818
+
+window.grip.focus:                  flat solid
+window.grip.focus.color:            #b21818
+window.grip.unfocus:                flat solid
+window.grip.unfocus.color:          #b21818
+
+window.button.focus:                parentrelative
+window.button.focus.picColor:       #b21818
+window.button.unfocus:              parentrelative
+window.button.unfocus.picColor:     #b2b2b2
+window.button.pressed:              flat solid bevel2
+window.button.pressed.color:        #000000
+
+window.frame.focusColor:            #b21818
+window.frame.unfocusColor:          #b2b2b2
+
+window.justify:                     center
+
+borderColor:                        #b21818
+
+borderWidth:                        1
+bevelWidth:                         1
+handleWidth:                        0
+
+*Font:                              nu

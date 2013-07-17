@@ -1,0 +1,7 @@
+defscrollback 10240
+defutf8 on
+vbell off
+term screen-256color
+defbce "on"
+standoutcolor 8
+barscolor 8

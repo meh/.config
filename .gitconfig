@@ -1,0 +1,9 @@
+[user]
+	email = meh@paranoici.org
+	name = meh.
+[core]
+	excludesfile = ~/.cvsignore
+	autocrlf = false
+[color]
+	status = auto
+	branch = auto

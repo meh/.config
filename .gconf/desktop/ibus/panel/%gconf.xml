@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="show_im_name" mtime="1332284795" type="bool" value="false"/>
+	<entry name="show" mtime="1332284791" type="int" value="0"/>
+	<entry name="use_custom_font" mtime="1332258686" type="bool" value="true"/>
+	<entry name="show_icon_on_systray" mtime="1332284794" type="bool" value="false"/>
+	<entry name="custom_font" mtime="1342694793" type="string">
+		<stringvalue>Kochi Gothic 8</stringvalue>
+	</entry>
+</gconf>

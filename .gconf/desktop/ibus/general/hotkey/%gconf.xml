@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="enable_unconditional" mtime="1341988704" type="list" ltype="string">
+	</entry>
+	<entry name="next_engine_in_menu" mtime="1341988700" type="list" ltype="string">
+	</entry>
+	<entry name="trigger" mtime="1342694805" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>Control+Alt+period</stringvalue>
+		</li>
+	</entry>
+</gconf>

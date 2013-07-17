@@ -1,0 +1,96 @@
+# use local repos to test
+zstyle ':zoppo:path' plugins "$HOME/projects/zoppo" "$HOME/projects/zoppo/plugins"
+zstyle ':zoppo:path' prompts "$HOME/projects/zoppo/prompts"
+
+# set editor mode to 'emacs' or 'vi'
+zstyle ':zoppo:plugin:editor' mode 'emacs'
+
+# autoconvert .... to ../..
+zstyle ':zoppo:plugin:editor' dot-expansion 'no'
+
+# set case-sensitivity for completion, history lookup, etc
+zstyle ':zoppo:*:*' case-sensitive 'no'
+
+# color output (auto set to 'no' on dumb terminals)
+zstyle ':zoppo:*:*' color 'yes'
+
+# plugins to load
+zstyle ':zoppo:load' plugins \
+  'syntax-highlight' 'completion' 'history-substring-search' 'agent' 'utility' 'X' \
+  'ruby' 'haskell' 'archive' 'sudo'
+
+# sudo
+zstyle ':zoppo:plugin:sudo' environments 'arch' 'utils' 'system' 'editors'
+
+# X
+zstyle ':zoppo:plugin:X:screen' saver 'yes'
+
+zstyle ':zoppo:plugin:X:keyboard' language 'it'
+zstyle ':zoppo:plugin:X:keyboard' input 'ibus'
+zstyle ':zoppo:plugin:X:keyboard' auto-repeat '250 30'
+
+zstyle ':zoppo:plugin:X:mouse' unclutter '1'
+zstyle ':zoppo:plugin:X:mouse' acceleration '200/30'
+zstyle ':zoppo:plugin:X:mouse' threshold '1'
+
+# enable ssh-agent
+zstyle ':zoppo:plugin:agent:ssh' enable yes
+
+# set the prompt theme to load.
+zstyle ':zoppo' prompt 'borra' 'darkblood'
+zstyle ':zoppo:prompt:borra' plugins 'userhost' 'pts' 'meh-vcs-info' 'return'
+
+function +borra-meh-vcs-info {
+  local res=""
+  local sep="$1"
+  local backend
+  local enabled
+  local fmt
+  local s
+  local -A available
+
+  vcs_info # need VCS_INFO_backends
+  zdefault -a ':zoppo:prompt:borra:plugin:vcs' enable enabled "${VCS_INFO_backends[@]}"
+  zdefault -s ':zoppo:prompt:borra:plugin:vcs' format fmt '%b: %i'
+
+  for backend in ${VCS_INFO_backends[@]}; do
+    [ "${enabled[(I)$backend]}" = 0 ] && continue
+    zstyle ':vcs_info:*' enable "$backend"
+    vcs_info || continue
+    [ -z "${vcs_info_msg_0_}" ] && continue
+
+    available[$backend]="$vcs_info_msg_0_"
+  done
+
+  if [ "${#available}" = 1 ]; then
+    print -n "${available[${(k)available}]}"
+  else
+    zstyle -s ':zoppo:prompt:borra:plugin:vcs' format 'fmt'
+    for backend in ${(k)available}; do
+      zformat -f s "$fmt" b:"$backend" i:"${available[$backend]}"
+      res+="$(prompt:borra:wrap-plugin "$s" "$sep")"
+      [ -z "$sep" -a ! -z "$res" ] && zstyle -s ':zoppo:prompt:borra' separator 'sep'
+    done
+    print -n -- "$res"
+    return 23
+  fi
+}
+
+zstyle ':vcs_info:*' formats '%c%u%b'
+zstyle ':vcs_info:*' unstagedstr '%F{yellow}%f '
+zstyle ':vcs_info:*' stagedstr '%F{green}%f '
+zstyle ':vcs_info:*+set-message:*' hooks 'git-st2'
+
+function +vi-git-st2 {
+  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
+    hook_com[unstaged]='%F{red}%f '
+  fi
+}
+
+zstyle ':zoppo:plugin:history-substring-search:colors' found 'bg=green,fg=white,bold'
+zstyle ':zoppo:plugin:history-substring-search:colors' not-found 'bg=red,fg=white,bold'
+
+zstyle ':zoppo:plugin:utility:ls' colors 'no=00:fi=00:rs=0:di=01;37:ln=04;37:mh=00:pi=04;31:so=01;07;40;37:do=01;07;40;37:bd=01;30:cd=01;30:or=01;05;37;41:mi=31:su=30;41:sg=30;41:ca=00:tw=07;01;41;37:ow=01;37;41:st=04;01;37:ex=31:'
+zstyle ':zoppo:plugin:utility:grep' colors 'ms=1;37:fn=0;31:se=1;30'
+
+# vim: ft=zsh sts=2 ts=2 sw=2 et fdm=marker fmr={{{,}}}

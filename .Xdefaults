@@ -1,0 +1,103 @@
+# Xft config
+Xft.dpi:       96
+Xft.hinting:   1
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault
+Xft.antialias: 0
+Xft.rgba:      rgb
+
+# xscreensaver
+xscreensaver.Dialog.foreground:         #ffffff
+xscreensaver.Dialog.background:         #000000
+xscreensaver.Dialog.topShadowColor:     #000000
+xscreensaver.Dialog.bottomShadowColor:  #000000
+xscreensaver.Dialog.Button.foreground:  #000000
+xscreensaver.Dialog.Button.background:  #b21818
+
+xscreensaver.Dialog.text.foreground:     #ffffff
+xscreensaver.Dialog.text.background:     #b21818
+xscreensaver.Dialog.internalBorderWidth: 36
+xscreensaver.Dialog.borderWidth:         1
+xscreensaver.Dialog.shadowThickness:     2
+
+xscreensaver.passwd.thermometer.foreground: #b21818
+xscreensaver.passwd.thermometer.background: #000000
+xscreensaver.passwd.thermometer.width:      2
+
+# URxvt config
+URxvt*iso14755:          false
+URxvt.inputMethod:       ibus
+URxvt.preeditType:       OverTheSpot
+URxvt*termName:          rxvt-256color
+URxvt*buffered:          true
+URxvt*showMenu:          false
+URxvt*veryBoldFont:      false
+URxvt*visualBell:        false
+URxvt*hideButtons:       true
+URxvt*scrollBar:         false
+URxvt*internalBorder:    0
+URxvt*externalBorder:    0
+URxvt*jumpScroll:        true
+URxvt*saveLines:         31337
+URxvt*secondaryScroll:   true
+URxvt*scrollTtyOutput:   false
+URxvt*scrollTtyKeypress: true
+
+URxvt*font: xft:GohuFont:style=Regular:antialias=false, \
+            xft:Kochi Gothic:style=Regular:antialias=false, \
+            xft:Baekmuk Gulim:style=Regular:antialias=true, \
+            xft:Verdana:style=Regular:antialias=false
+
+URxvt*boldFont: xft:GohuFont:style=Bold:antialias=false, \
+                xft:Kochi Gothic:style=Regular:antialias=false, \
+                xft:Baekmuk Gulim:style=Regular:antialias=true, \
+                xft:Verdana:style=Bold:antialias=false
+
+URxvt*background:     rgba:0000/0000/0000/dddd
+URxvt*foreground:     gray
+URxvt*underlineColor: #b21818
+URxvt*cursorColor:    #b21818
+URxvt*cursorColor2:   #ffffff
+URxvt*color0:         #000000
+URxvt*color1:         #b21818
+URxvt*color2:         #18b218
+URxvt*color3:         #BE5F00
+URxvt*color4:         #6D85BA
+URxvt*color5:         #b218b2
+URxvt*color6:         #18b2b2
+URxvt*color7:         #b2b2b2
+URxvt*color8:         #686868
+URxvt*color9:         #FF5454
+URxvt*color10:        #54FF54
+URxvt*color11:        #FFFF54
+URxvt*color12:        #73A5FF
+URxvt*color13:        #FF54FF
+URxvt*color14:        #54FFFF
+URxvt*color15:        #FFFFFF
+
+URxvt*perl-ext-common:     default,matcher,url-select,keyboard-select
+URxvt*keysym.4-Tab:        perl:url-select:select_next
+URxvt*keysym.M-v:          perl:keyboard-select:activate
+URxvt*url-select.launcher: firefox
+URxvt*url-select.autocopy: true
+URxvt*matcher.button:      1
+URxvt*matcher.pattern.1:   \\b(mailto|http|https|ftp|file):/*[[:^space:]]+\\.[[:^space:]]*
+URxvt*matcher.pattern.2:   \\bwww\\.[[:^space:]]+\\.[[:^space:]]*
+
+huge.font:     xft:monospace:size=16:antialias=false, xft:Verdana:antialias=false
+huge.boldFont: xft:monospace:bold:size=16:antialias=false, xft:Verdana:bold:antialias=false
+
+first.transparent:    true
+first.shading:        15
+first.internalBorder: 1
+
+second.transparent:    true
+second.shading:        15
+second.internalBorder: 1
+
+bottom.transparent:    true
+bottom.shading:        15
+bottom.internalBorder: 1
+
+coed.transparent: true
+coed.shading:     15

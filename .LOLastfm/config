@@ -1,0 +1,32 @@
+commands :glyr
+use      :moc
+
+%w(listened love unlove now_playing).each {|name|
+	on name do |song|
+		if !song.artist && !song.title
+			file = song.path.split(File::SEPARATOR).last
+
+			next if file.match(/^\d+ - /)
+
+			file.match(/^(.*?) - (.*?)\.[^.]+$/) {|m|
+				song.artist = m[1]
+				song.title  = m[2]
+			}
+
+			:stop
+		else !song.artist && !song.stream?
+			if song.comment && song.comment.include?('trance.fm')
+				next :stop if song.title.include?('trance.fm') || song.title.start_with?('Trance - FM-')
+
+				song.artist, song.title = song.title.split(/ - /, 2)
+				song.length             = 60 * 1337
+
+				next
+			end
+
+			:stop
+		end
+
+		next
+	end
+}

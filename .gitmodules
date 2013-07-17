@@ -1,0 +1,15 @@
+[submodule ".vim"]
+	path = .vim
+	url = git://github.com/meh/vimmeh.git
+[submodule ".urxvt/ext"]
+	path = .urxvt/ext
+	url = git@github.com:meh/urxvt-perls.git
+[submodule "bin/modules/vimpager"]
+	path = bin/modules/vimpager
+	url = git://github.com/rkitover/vimpager.git
+[submodule ".zprezto"]
+	path = .zprezto
+	url = git://github.com/meh/prezto.git
+[submodule ".zoppo"]
+	path = .zoppo
+	url = git://github.com/meh/zoppo.git

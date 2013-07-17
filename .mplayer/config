@@ -1,0 +1,21 @@
+# default configuration that applies to every file
+[default]
+
+# use X11 for video output
+vo=xv
+
+# use alsa for audio output
+ao=alsa
+
+# multithreaded decoding of H264/MPEG-1/2 (valid: 1-8)
+lavdopts=threads=2
+
+# scale the subtitles to the 3% of the screen size
+subfont-text-scale = 3
+
+# never use font config
+nofontconfig = 1
+
+# Disable screensaver.
+heartbeat-cmd="xscreensaver-command -deactivate &" # stop xscreensaver
+stop-xscreensaver="yes" # stop gnome-screensaver

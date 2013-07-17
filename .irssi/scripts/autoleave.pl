@@ -1,0 +1,1 @@
+/home/meh/random/programming/perl/irssi/autoleave.pl

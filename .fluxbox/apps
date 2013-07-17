@@ -1,0 +1,79 @@
+[startup] {background}
+[startup] {urxvt -pt Root -name first &}
+[startup] {urxvt -pt Root -name second &}
+[startup] {urxvt -pt Root -name bottom -e screen -a -RR &}
+[startup] {urxvt -pt Root -name coed &}
+
+[app] (name=first)
+  [Workspace]	{0}
+  [Dimensions]	{1280 570}
+  [Position]	(UPPERLEFT)	{0 0}
+  [Deco]	{NONE}
+  [Hidden]	{no}
+  [Sticky]	{no}
+  [Layer]	{12}
+  [Alpha]	{235 235}
+[end]
+
+[app] (name=second)
+  [Workspace]	{1}
+  [Dimensions]	{1280 570}
+  [Position]	(UPPERLEFT)	{0 0}
+  [Deco]	{NONE}
+  [Hidden]	{no}
+  [Sticky]	{no}
+  [Layer]	{12}
+  [Alpha]	{235 235}
+[end]
+
+[app] (name=bottom)
+  [Dimensions]	{1280 240}
+  [Position]	(UPPERLEFT)	{0 568}
+  [Deco]	{NONE}
+  [Hidden]	{no}
+  [Sticky]	{yes}
+  [Layer]	{12}
+  [Alpha]	{235 235}
+[end]
+
+[app] (name=coed)
+  [Workspace]	{5}
+  [Dimensions]	{1280 788}
+  [Position]	(UPPERLEFT)	{0 0}
+  [Deco]	{NONE}
+  [Hidden]	{no}
+  [Sticky]	{no}
+  [Layer]	{10}
+  [Alpha]   {255 255}
+[end]
+
+[app] (role=browser)
+  [Workspace]	{2}
+  [Dimensions]	{1280 790}
+  [Position]	(UPPERLEFT)	{0 0}
+  [Deco]	{NONE}
+  [Hidden]	{no}
+  [Sticky]	{no}
+  [Alpha]	{255 255}
+[end]
+
+[app] (class=MPlayer)
+	[Alpha] {255 255}
+	[Sticky] {yes}
+	[Layer]	{1}
+[end]
+
+[app] (class=mplayer2)
+	[Alpha] {255 255}
+	[Sticky] {yes}
+	[Layer]	{1}
+[end]
+
+[app] (class=Skype)
+	[Workspace] {5}
+	[Dimensions] {1 1}
+	[Position] (UPPERRIGHT) {20 20}
+	[Layer] {12}
+	[Hidden] {yes}
+	[Alpha] {0 0}
+[end]

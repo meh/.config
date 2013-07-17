@@ -1,0 +1,23 @@
+#! /bin/sh
+
+export DISPLAY=:0.0
+
+if [[ `xprop -root | grep "1280, 1824"` ]]; then
+	#IMAGE=nhk_big.png
+
+	if [[ $(($RANDOM % 100)) -gt 50 ]]; then
+		IMAGE=nekomimi_bg_big.png
+	else
+		IMAGE=nekomimi_b_bg_big.png
+	fi
+else
+	IMAGE=nhk.png
+
+	if [[ $(($RANDOM % 100)) -gt 50 ]]; then
+		IMAGE=nekomimi_bg.png
+	else
+		IMAGE=nekomimi_b_bg.png
+	fi
+fi
+
+feh --no-xinerama --bg-center ~/random/images/wp/$IMAGE

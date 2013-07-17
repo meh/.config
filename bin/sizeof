@@ -1,0 +1,13 @@
+#! /usr/bin/env ruby
+require 'optparse'
+require 'mkmf'
+
+headers = []
+
+while ARGV.first == '-i'
+	_, header = ARGV.shift(2)
+
+	headers << header
+end
+
+check_sizeof ARGV.join(' '), headers

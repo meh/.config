@@ -1,0 +1,37 @@
+# Dark red theme by meh.
+
+background              = default       default
+frame                   = red           default
+window_title            = white         default
+directory               = red           default     bold
+selected_directory      = white         red         bold
+playlist                = red           default
+selected_playlist       = white         red         bold
+file                    = white         default
+selected_file           = white         red         bold
+marked_file             = white         default     bold
+marked_selected_file    = black         red
+info                    = black         default     bold
+selected_info           = red           default
+marked_info             = white         red         bold
+marked_selected_info    = white         red         bold
+status                  = red           default
+title                   = white         default     bold
+state                   = red           default
+current_time            = white         default     bold
+time_left               = white         default     bold
+total_time              = white         default     bold
+time_total_frames       = red           default
+sound_parameters        = white         default     bold
+legend                  = white         default
+disabled                = black         default     bold
+enabled                 = red           default
+empty_mixer_bar         = white         default
+filled_mixer_bar        = black         red
+empty_time_bar          = red           default
+filled_time_bar         = black         red
+entry                   = white         default
+entry_title             = black         red
+error                   = red           default     bold
+message                 = white         default     bold
+plist_time              = white         default     bold

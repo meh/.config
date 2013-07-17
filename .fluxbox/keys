@@ -1,0 +1,114 @@
+! fluxbox-update_configs added '(workspace=[current])' to (Next|Prev)(Window|Group)
+! check lines marked by 'FBCV13' if they are correctly updated
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Mouse1 :MacroCmd {Focus} {Raise} {ActivateTab}
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Move1 :StartMoving
+OnLeftGrip Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+OnWindowBorder Move1 :StartMoving
+
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Mouse2 :StartTabbing
+
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Double Mouse1 :Shade
+OnTitlebar Mouse3 :WindowMenu
+
+123 :Exec amixer sset PCM,0 1+
+122 :Exec amixer sset PCM,0 1-
+121 :Exec amixer sset Master,0 toggle
+
+Control 123 :Exec amixer sset Headphone,0 1+
+Control 122 :Exec amixer sset Headphone,0 1-
+Control 121 :Exec amixer sset Headphone,0 toggle
+
+Shift 123 :Exec amixer sset Front,0 1+
+Shift 122 :Exec amixer sset Front,0 1-
+Shift 121 :Exec amixer sset Front,0 toggle
+
+Alt 123 :Exec amixer sset PCM,0 1+
+Alt 122 :Exec amixer sset PCM,0 1-
+
+Mod4 f :ExecCommand rtile --active fullscreen
+Shift Mod4 f :ExecCommand rtile --active fullscreen only_height
+Mod4 Alt f :ExecCommand rtile --active halfscreen
+Shift Mod4 Alt f :ExecCommand rtile --active halfscreen only_height
+Shift Ctrl Mod4 Alt f :Maximize
+Mod4 r :ExecCommand rtile
+
+Mod4 Ctrl Up :Maximize
+Mod4 Ctrl Left :ExecCommand rtile --active left
+Mod4 Ctrl Right :ExecCommand rtile --active right
+
+Mod4 Ctrl Alt Left :ExecCommand rtile --active halfleft
+Mod4 Ctrl Alt Right :ExecCommand rtile --active halfright
+
+!mouse actions added by fluxbox-update_configs
+OnWindow Alt Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindow Alt Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
+
+Ctrl Alt Up :MoveUp 1
+Ctrl Alt Down :MoveDown 1
+Ctrl Alt Left :MoveLeft 1
+Ctrl Alt Right :MoveRight 1
+
+Shift Ctrl Alt Up :MoveUp 5
+Shift Ctrl Alt Down :MoveDown 5
+Shift Ctrl Alt Left :MoveLeft 5
+Shift Ctrl Alt Right :MoveRight 5
+
+Mod4 Shift Ctrl Alt Up :MoveUp 10
+Mod4 Shift Ctrl Alt Down :MoveDown 10
+Mod4 Shift Ctrl Alt Left :MoveLeft 10
+Mod4 Shift Ctrl Alt Right :MoveRight 10
+
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse2 :WorkspaceMenu
+OnDesktop Mouse3 :RootMenu
+OnDesktop Mouse4 :NextWorkspace
+OnDesktop Mouse5 :PrevWorkspace
+
+Alt Tab :NextWindow (workspace=[current]) !! FBCV13 !!
+Mod4 Right :NextWorkspace
+Mod4 Left :PrevWorkspace
+
+Alt Delete :Workspace 6
+Alt F1 :Workspace 1
+Alt F2 :Workspace 2
+Alt F3 :Workspace 3
+Alt F4 :Workspace 4
+Alt F5 :Workspace 5
+Alt F6 :Workspace 6
+Alt F7 :Workspace 7
+Alt F8 :Workspace 8
+Alt F9 :Workspace 9
+Alt F10 :Workspace 10
+Alt F11 :Workspace 11
+
+Mod4 F12 :execCommand screenshot scr
+Alt F12 :execCommand screenshot win
+
+Alt t :ExecCommand urxvt -pt Root
+Alt g :ExecCommand gimp
+Alt w :ExecCommand firefox
+Alt Shift w :ExecCommand google-chrome
+Alt k :ExecCommand xkill
+Mod4 k :Close
+Mod4 t :ToggleDecor
+Mod4 s :ExecCommand transset-df 1
+Shift Mod4 l :ExecCommand xscreensaver-command --lock
+
+Mod4 m :ExecCommand LOLastfm-now-playing -t '"#{title}" by "#{artist}"#{" on \"#{album}\"" if album}' | tr -d "\n" | xclip
+Mod4 l :ExecCommand LOLastfm-send --love --current
+Mod4 u :ExecCommand LOLastfm-send --unlove --current
+
+Mod4 Alt n :ExecCommand mocp --next
+Mod4 Alt p :ExecCommand mocp --previous
+Mod4 Alt s :ExecCommand mocp --toggle-pause
+
+!Mod4 Alt n :ExecCommand cmus-remote --next
+!Mod4 Alt p :ExecCommand cmus-remote --prev
+!Mod4 Alt s :ExecCommand cmus-remote --pause
+!Mod4 Alt Shift s :ExecCommand cmus-remote --stop
+!Mod4 Alt Shift p :ExecCommand cmus-remote --play

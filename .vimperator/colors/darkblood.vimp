@@ -1,0 +1,48 @@
+hi Enabled  color: darkgreen; background: black;
+hi Disabled color: red; background: black;
+
+hi Title    color: white; background: #b21818;
+hi Normal   color: white; background: black;
+
+hi Help         color: white; background: black; font-family: Monospace;
+hi HelpArg      color: red;
+hi -a HelpHead  color: #b21818;
+hi -a HelpEx    color: #b21818 !important;
+hi -a HelpLink  color: red;
+
+hi ContentSeparator border-top: 1px solid #b21818;
+
+hi CompTitle            color: #b21818; background: black;
+hi CompDesc             color: gray;    background: black;
+hi CompGroup            color: red;     background: black;
+hi CompItem             color: white;   background: black;
+hi CompItem:nth-child(2n+1) color: white, background: #050505 !important;
+hi CompItem[selected]   color: white;   background: #b21818 !important;
+hi CompIcon             color: white;   background: black;
+hi CompTitle>*          color: white;   background: black;
+
+hi Indicator color white; background: #b21818;
+
+hi Indicator        background: black;
+
+hi Hint         color: white !important; background: #b21818 !important; padding: 0 3px 2px 4px; margin-top: 1em;
+hi HintElem     color: white !important; background: black !important; !important;
+hi HintActive   color: white !important; background: #b21818 !important;
+
+hi StatusLine           color: white;   background: black;
+
+hi CmdLine      color: white;   background: black;
+hi CmdOutput    color: white;   background: black;
+
+hi NonText      color: white;   background: black;
+
+hi ModeMsg      color: white;   background: black;
+hi ErrorMsg     color: white;   background: #b21818;
+hi WarningMsg   color: white;   background: #b21818;
+hi InfoMsg      color: white;   background: black; text-decoration: underline;
+hi MoreMsg      color: white;   background: #b21818;
+
+hi LineNr       color: #b21818; background: black;
+hi Question     color: white;   background: black;
+hi PromptText background: #b21818; color: white;
+hi Filter background: transparent; border: 1px solid #b21818; border-radius: 0;

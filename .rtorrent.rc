@@ -1,0 +1,84 @@
+# Maximum and minimum number of peers to connect to per torrent.
+min_peers = 40
+max_peers = 100
+
+# Same as above but for seeding completed torrents (-1 = same as downloading)
+min_peers_seed = 10
+max_peers_seed = 50
+
+# Maximum number of simultanious uploads per torrent.
+max_uploads = 15
+
+# Global upload and download rate in KiB. "0" for unlimited.
+download_rate = 0
+upload_rate = 20
+
+# Default directory to save the downloaded torrents.
+directory = ~/Downloads
+
+# Default session directory. Make sure you don't run multiple instance
+# of rtorrent using the same session directory. Perhaps using a
+# relative path?
+session = ~/.rtorrent/session
+
+# Port range to use for listening.
+port_range = 6890-6999
+
+# Start opening ports at a random position within the port range.
+port_random = yes
+
+# Check hash for finished torrents. Might be usefull until the bug is
+# fixed that causes lack of diskspace not to be properly reported.
+check_hash = yes
+
+# Set whether the client should try to connect to UDP trackers.
+use_udp_trackers = yes
+
+# Encryption options, set to none (default) or any combination of the following:
+# allow_incoming, try_outgoing, require, require_RC4, enable_retry, prefer_plaintext
+#
+# The example value allows incoming encrypted connections, starts unencrypted
+# outgoing connections but retries with encryption if they fail, preferring
+# plaintext to RC4 encryption after the encrypted handshake
+#
+encryption = allow_incoming,enable_retry
+
+# Enable DHT support for trackerless torrents or when all trackers are down.
+# May be set to "disable" (completely disable DHT), "off" (do not start DHT),
+# "auto" (start and stop DHT as needed), or "on" (start DHT immediately).
+# The default is "off". For DHT to work, a session directory must be defined.
+#
+dht = auto
+
+# UDP port to use for DHT.
+#
+dht_port = 6890
+
+# Enable peer exchange (for torrents not marked private)
+#
+peer_exchange = yes
+
+# UI
+view.collapsed.toggle = main
+
+ui.color.alarm.set = "red"
+ui.color.complete.set = "bright bold white"
+ui.color.even.set = "on 234"
+ui.color.focus.set = "bright white on red"
+ui.color.footer.set = "bold bright white"
+ui.color.incomplete.set = "bright white"
+ui.color.info.set = "white"
+ui.color.label.set = "gray"
+ui.color.leeching.set = "green"
+ui.color.odd.set = "on 232"
+ui.color.progress0.set = "196"
+ui.color.progress100.set = "34"
+ui.color.progress120.set = "bold bright 47"
+ui.color.progress20.set = "202"
+ui.color.progress40.set = "213"
+ui.color.progress60.set = "214"
+ui.color.progress80.set = "226"
+ui.color.queued.set = "on 0"
+ui.color.seeding.set = "bold bright 46"
+ui.color.stopped.set = "bright white"
+ui.color.title.set = "underline bold bright white"

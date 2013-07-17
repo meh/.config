@@ -1,0 +1,15 @@
+require 'ap'
+
+require 'ripl/multi_line'
+require 'ripl/color_error'
+require 'ripl/auto_indent'
+
+if defined?(Ripl)
+	Ripl::Shell.class_eval do
+		if respond_to? :ai
+#			def format_result (result)
+#				result = result.ai
+#			end
+		end
+	end
+end

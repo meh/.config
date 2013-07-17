@@ -1,0 +1,13 @@
+.statuspanel-label {
+	background: black !important;
+	border: 1px solid #b21818 !important;
+	border-bottom: 0 !important;
+	border-left: 0 !important;
+	border-radius: 0 !important;
+	color: white !important;
+}
+
+.statuspanel-label[mirror=true] {
+	border-left: 1px solid #b21818 !important;
+	border-right: 0 !important;
+}

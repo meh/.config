@@ -1,0 +1,21 @@
+defscrollback 10240
+defutf8 on
+vbell off
+term screen-256color
+defbce "on"
+standoutcolor 8
+barscolor 8
+
+backtick 1 1 1 hs right
+
+hardstatus alwayslastline
+hardstatus string '%{= dd}%{r}[%{+b W}%H%{-b r}]%=%{w}%?%-w%?%{r}[%{+b W}%n %t%?(%u)%?%{-b r}]%{w}%?%+w%?%?%=%{r}%1`[%{+b W}%D %d/%m/%Y %c:%s%{-b r}]'
+
+screen -t root    0
+screen -t irc     1
+screen -t mail    2
+screen -t torrent 3
+screen -t music   4
+screen -t random  5
+
+startup_message off

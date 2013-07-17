@@ -1,0 +1,102 @@
+PATH=/bin:/usr/bin:/usr/local/bin
+VERBOSE=off
+DEFAULT=$HOME/mail/inbox
+MAILDIR=$HOME/mail
+LOGFILE=$HOME/.procmaillog
+
+:0:
+* ^From.*rss@herpes
+rss
+
+:0:
+* ^From.*rss-webcomic@herpes
+rss-webcomic
+
+:0:
+* ^From.*rss-nsfw@herpes
+rss-nsfw
+
+:0:
+* ^(To|From).*(dev-tech-js-engine.*@lists.mozilla.org)
+tracemonkey
+
+:0:
+* ^(To|From).*([Mm]ajordomo@vger.kernel.org)
+* ^(Cc|To).*(linux-kernel@vger.kernel.org)
+linux-kernel
+
+:0:
+* ^(To|From|Cc).*(ecls-list@lists.(sourceforge|sf).net)
+ecl
+
+:0:
+* ^(To|From|Cc).*(tor-talk@lists.torproject.org)
+tor-talk
+
+:0:
+* ^(To|From|Cc).*(tor-dev@lists.torproject.org)
+tor-dev
+
+:0:
+* ^(To|From|Cc).*(camp-org@olografix.org)
+moca
+
+:0:
+* ^(To|From|Cc).*(tech@openbsd.org)
+openbsd
+
+:0:
+* ^(To|From|Cc).*(elixir-lang-core@googlegroups.com)
+elixir-lang
+
+:0:
+* ^(To|From|Cc).*(hackmeeting@inventati.org)
+hackmeeting
+
+:0:
+* ^(To|From|Cc).*(d-bugmail@puremagic.com)
+d-bugzilla
+
+:0:
+* ^(To|From|Cc).*(cmus-devel@lists.(sourceforge|sf).net)
+cmus
+
+:0:
+* ^(To|From).*(about-mozilla@mozilla.com)
+mozilla
+
+:0:
+* ^(To|From).*(bugzilla-daemon@mozilla.org)
+mozilla-bugzilla
+
+:0:
+* ^(To|From).*(mozillalabs.com)
+mozilla-labs
+
+:0:
+* ^(To|From).*(github.com)
+github
+
+:0
+* !^Content-Type: message/
+* !^Content-Type: multipart/
+* !^Content-Type: application/pgp
+{
+    :0 fBw
+    * ^-----BEGIN PGP MESSAGE-----
+    * ^-----END PGP MESSAGE-----
+    | formail \
+        -i "Content-Type: application/pgp; format=text; x-action=encrypt"
+
+    :0 fBw
+    * ^-----BEGIN PGP SIGNED MESSAGE-----
+    * ^-----BEGIN PGP SIGNATURE-----
+    * ^-----END PGP SIGNATURE-----
+    | formail \
+        -i "Content-Type: application/pgp; format=text; x-action=sign"
+
+    :0 fBw
+    * ^-----BEGIN PGP PUBLIC KEY BLOCK-----
+    * ^-----END PGP PUBLIC KEY BLOCK-----
+    | formail -i "Content-Type: application/pgp-keys; format=text;"
+}

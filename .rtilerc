@@ -1,0 +1,76 @@
+display do |d|
+	height = d.default_screen.height
+	width  = d.default_screen.width
+
+	normal do
+		next unless ARGV.first == 'monitor'
+
+		if ARGV.last == 'on'
+			system('xrandr --output VGA1 --auto --mode 1280x1024 --output LVDS1 --below VGA1 --auto')
+		else
+			system('xrandr --output VGA1 --off')
+		end
+
+		system('background')
+	end
+
+	[:focus, :select, :active].each {|what|
+		__send__ what do |w|
+			return if [w, d.root_window.under_pointer.client].all? {|win|
+				(w = win).properties[:WM_CLASS].value.member?('bottom')
+			}
+
+			border = w.parent.attributes.border_width
+
+			case ARGV.first
+				when 'fullscreen'
+					if ARGV.last == 'only_height'
+						w.move y: 0
+						w.resize height: (height != 1824 ? 788 : 1014) - border * 2
+					else
+						w.move 0, 0
+						w.resize 1280 - border * 2, (height != 1824 ? 788 : 1014) - border * 2
+					end
+
+				when 'halfscreen'
+					if ARGV.last == 'only_height'
+						w.move y: 0
+						w.resize height: (height != 1824 ? 563 : 800) - border * 2
+					else
+						w.move 0, 0
+						w.resize 1280 - border * 2, (height != 1824 ? 563 : 788) - border * 2
+					end
+
+				when 'left'
+					w.move 0, 0
+					w.resize width / 2, (height != 1824 ? 788 : 1014) - border * 2
+
+				when 'halfleft'
+					w.move 0, 0
+					w.resize width / 2, (height != 1824 ? 563 : 800) - border * 2
+
+				when 'right'
+					w.move width / 2, 0
+					w.resize width / 2 - 2, (height != 1824 ? 788 : 1014) - border * 2
+
+				when 'halfright'
+					w.move width / 2, 0
+					w.resize width / 2 - 2, (height != 1824 ? 563 : 800) - border * 2
+			end
+		end
+	}
+
+	window name: ['first', 'second'] do |w|
+		w.move 0, 0
+		w.resize 1278, (height != 1824 ? 563 : 785)
+	end
+
+	window name: 'bottom' do |w|
+		w.move 0, (height != 1824 ? 568 : 792)
+	end
+
+	window name: 'Navigator' do |w|
+		w.move 0, 0
+		w.resize 1280, 788
+	end
+end

@@ -1,0 +1,3 @@
+#! /bin/sh
+
+rtile monitor $1
