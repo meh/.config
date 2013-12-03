@@ -23,9 +23,9 @@ Control 123 :Exec amixer sset Headphone,0 1+
 Control 122 :Exec amixer sset Headphone,0 1-
 Control 121 :Exec amixer sset Headphone,0 toggle
 
-Shift 123 :Exec amixer sset Front,0 1+
-Shift 122 :Exec amixer sset Front,0 1-
-Shift 121 :Exec amixer sset Front,0 toggle
+Shift 123 :Exec amixer sset Speaker,0 1+
+Shift 122 :Exec amixer sset Speaker,0 1-
+Shift 121 :Exec amixer sset Speaker,0 toggle
 
 Alt 123 :Exec amixer sset PCM,0 1+
 Alt 122 :Exec amixer sset PCM,0 1-
@@ -91,8 +91,8 @@ Alt F12 :execCommand screenshot win
 
 Alt t :ExecCommand urxvt -pt Root
 Alt g :ExecCommand gimp
-Alt w :ExecCommand firefox
-Alt Shift w :ExecCommand google-chrome
+Alt w :ExecCommand firefox -P default
+Alt Shift w :ExecCommand google-chrome-stable
 Alt k :ExecCommand xkill
 Mod4 k :Close
 Mod4 t :ToggleDecor

@@ -57,13 +57,7 @@
   [Alpha]	{255 255}
 [end]
 
-[app] (class=MPlayer)
-	[Alpha] {255 255}
-	[Sticky] {yes}
-	[Layer]	{1}
-[end]
-
-[app] (class=mplayer2)
+[app] (class=mpv)
 	[Alpha] {255 255}
 	[Sticky] {yes}
 	[Layer]	{1}
