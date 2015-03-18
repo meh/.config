@@ -18,20 +18,33 @@ Irssi::theme_register([
 
 my %quit;
 
-Irssi::signal_add 'message join' => sub {
-	my ($server, $channel, $nick, $address) = @_;
+sub notify {
+	my ($server, $nick, $address) = @_;
 
-	if ($quit{"$server->{tag}:$nick"}) {
-		delete $quit{"$server->{tag}:$nick"};
+	if ($quit{"$server:$nick"}) {
+		delete $quit{"$server:$nick"};
 
 		foreach $query (Irssi::queries()) {
-			if ($query->{server_tag} eq $server->{tag} && $query->{name} eq $nick) {
+			if ($query->{server_tag} eq $server && $query->{name} eq $nick) {
 				$query->printformat(MSGLEVEL_JOINS, 'connect', $nick, $address);
 
 				break;
 			}
 		}
 	}
+
+}
+
+Irssi::signal_add 'message join' => sub {
+	my ($server, $channel, $nick, $address) = @_;
+
+	notify($server->{tag}, $nick, $address);
+};
+
+Irssi::signal_add 'nicklist changed' => sub {
+	my ($channel, $nick, $old) = @_;
+
+	notify($channel->{server}->{tag}, $nick->{nick}, $nick->{host});
 };
 
 Irssi::signal_add 'message quit' => sub {
