@@ -2,10 +2,10 @@ require 'json'
 require 'socket'
 require 'timeout'
 
-right '#{irssi}#{email}#{hackers}#{processor}#{temperature}#{wireless}#{battery}'
+right '#{irssi}#{email}#{hackers}#{processor}#{temperature}#{wireless}#{battery}#{time}'
 
 def wrap (string)
-	"\005{= r}[\005{+b W}#{string}\005{= dr}] "
+	"\005{= 1}[\005{+b 15}#{string}\005{-}\005{1}] "
 end
 
 backtick :irssi, every: second do
@@ -13,16 +13,21 @@ backtick :irssi, every: second do
 
 	unless notifications.empty?
 		wrap "IRC\005{-b r}|" + notifications.map {|n|
-			"\005{+b rW}#{n}\005{-b dd}"
+			"\005{b1;15}#{n}\005{-}\005{dd}"
 		}.join(' ')
 	end
 end
 
-backtick :email, every: second do
+backtick :email, every: 5.seconds do
+	unless `ps aux | grep fetchmail | grep -v grep`.strip.empty?
+		next wrap "Mail\005{-b r}|\005{+b W}..."
+	end
+
 	socket = TCPSocket.new('localhost', '9001')
 	socket.puts '* list unread'
 
 	notifications = JSON.parse(socket.gets)
+	socket.close
 
 	unless notifications.empty?
 		wrap "Mail\005{-b r}|" + notifications.map {|name|
@@ -45,10 +50,10 @@ end
 
 backtick :temperature, every: 5.seconds do
 	`sensors`.match(/temp1:\s+([\d+\-.]+)/) { |m|
-		wrap(if m.to_i > 100
+		wrap(if m[1].to_i > 100
 			'STACCA STACCA STACC-'
 		else
-			"#{m} C"
+			"#{m[1]} C"
 		end)
 	}
 end
@@ -59,10 +64,20 @@ backtick :wireless, every: 5.seconds do
 	next if state =~ /No such device/
 
 	essid   = state.match(/ESSID:"(.*?)"/)[1]
-	quality = state.match(/Quality=(.*?) /)[1]
+
+	scan    = `iwlist wlan0 s`
+	quality = scan.match(/Quality=(\d+\/\d+).*?ESSID:"#{Regexp.escape(essid)}"/ms)[1]
+
+	if essid =~ /ravenna/i
+		essid = "???"
+	end
+
+	if quality =~ /^(\d+)\/(\d+)$/
+		quality = (($1.to_f / $2.to_f) * 100).to_i
+	end
 
 	if quality
-		wrap "#{essid}\005{-b r}|\005{+b W}#{quality}"
+		wrap "#{essid}\005{-}\005{1}|\005{b15}#{quality}%"
 	end
 end
 
@@ -71,11 +86,15 @@ backtick :battery, every: 5.seconds do
 
 	next if state =~ /100\.0%/
 
-	current = state.match(/([^\s]+%.*)$/)[1].sub(/, /, "\005{-b r}|\005{+b W}")
+	current = state.match(/([^\s]+%.*)$/)[1].sub(/, /, "\005{-}\005{1}|\005{b15}")
 
 	if state.match(/discharging/i)
-		wrap "\005{-b r}v|\005{+b W}#{current}"
+		wrap "\005{-}\005{1}v|\005{b15}#{current}"
 	else
-		wrap "^\005{-b r}|\005{+b W}#{current}"
+		wrap "^\005{-}\005{1}|\005{b15}#{current}"
 	end
+end
+
+backtick  :time, every: second do
+	wrap(Time.now.strftime('%a %D %T')).rstrip
 end

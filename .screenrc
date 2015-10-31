@@ -3,13 +3,13 @@ defutf8 on
 vbell off
 term screen-256color
 defbce "on"
-standoutcolor 8
-barscolor 8
+sorendition 1
+barsrendition 1
 
 backtick 1 1 1 hs right
 
 hardstatus alwayslastline
-hardstatus string '%{= dd}%{r}[%{+b W}%H%{-b r}]%=%{w}%?%-w%?%{r}[%{+b W}%n %t%?(%u)%?%{-b r}]%{w}%?%+w%?%?%=%{r}%1`[%{+b W}%D %d/%m/%Y %c:%s%{-b r}]'
+hardstatus string '%{1}[%{b15}%H%{-}%{1}]%=%?%{238}%-w%?%{1}[%{b15}%n%? %t%?%{-}%{1}]%?%{238}%+w%?%?%=%{1}%1`'
 
 screen -t root    0
 screen -t irc     1
