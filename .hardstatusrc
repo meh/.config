@@ -2,25 +2,30 @@ require 'json'
 require 'socket'
 require 'timeout'
 
-right '#{irssi}#{email}#{hackers}#{processor}#{temperature}#{wireless}#{battery}#{time}'
+left  '#{start}#{irssi}#{email}#{hackers}'
+right '#{wireless}#{sound}#{processor}#{temperature}#{battery}#{time}'
 
 def wrap (string)
 	"\005{= 1}[\005{+b 15}#{string}\005{-}\005{1}] "
+end
+
+backtick :start, every: 5.hours do
+	wrap "\005{0;15}／人\005{1;15}◕\005{0;15} ‿‿ \005{1;15}◕\005{0;15}人＼"
 end
 
 backtick :irssi, every: second do
 	notifications = File.read(File.expand_path('~/.irssi/notifications')).gsub(':', '@').split(/, /)
 
 	unless notifications.empty?
-		wrap "IRC\005{-b r}|" + notifications.map {|n|
-			"\005{b1;15}#{n}\005{-}\005{dd}"
+		wrap "\005{-}\005{15}# " + notifications.map {|n|
+			"\005{b15;1}#{n}\005{-}\005{dd}"
 		}.join(' ')
 	end
 end
 
 backtick :email, every: 5.seconds do
 	unless `ps aux | grep fetchmail | grep -v grep`.strip.empty?
-		next wrap "Mail\005{-b r}|\005{+b W}..."
+		next wrap "\u{E0ED} \005{b15}..."
 	end
 
 	socket = TCPSocket.new('localhost', '9001')
@@ -30,8 +35,8 @@ backtick :email, every: 5.seconds do
 	socket.close
 
 	unless notifications.empty?
-		wrap "Mail\005{-b r}|" + notifications.map {|name|
-			"\005{+b rW}#{name}\005{-b dd}"
+		wrap "\u{E0ED} " + notifications.map {|name|
+			"\005{b15;1}#{name}\005{-}"
 		}.join(' ')
 	end
 end
@@ -39,62 +44,91 @@ end
 backtick :hackers, every: 5.seconds do
 end
 
+backtick :sound, every: 1.seconds do
+	status = `pulseaudio-ctl full-status`.split
+	icon   = if status[1] == "yes"
+		"\u{E0EC}"
+	else
+		"\u{E0EB}"
+	end
+
+	wrap "#{icon} #{status[0]}%"
+end
+
 backtick :processor, every: 5.seconds do
-	wrap `(cpupower -c 0 frequency-info; cpupower -c 1 frequency-info) |
-		grep "current CPU" |
-		head -n 1 |
-		sed 's/^.*is //' |
-		sed 's/\.$//' |
-		tr -d '\n'`
+	freq = `cpupower frequency-info`.match(/current CPU frequency: (\d+(\.\d+)? .Hz)/)[1]
+
+	wrap "\u{E0EA} #{freq}"
 end
 
 backtick :temperature, every: 5.seconds do
-	`sensors`.match(/temp1:\s+([\d+\-.]+)/) { |m|
-		wrap(if m[1].to_i > 100
+	`sensors`.match(/Physical id 0:\s+\+([\d\-.]+)/) { |m|
+		temp = m[1].to_i
+
+		wrap(if temp >= 100
 			'STACCA STACCA STACC-'
 		else
-			"#{m[1]} C"
+			"\u{E0E9} #{temp}°"
 		end)
 	}
 end
 
 backtick :wireless, every: 5.seconds do
-	state = `iwconfig wlan0`
+	state = `iw dev wlp2s0 link`
 
-	next if state =~ /No such device/
+	next unless state =~ /^Connected to /
 
-	essid   = state.match(/ESSID:"(.*?)"/)[1]
-
-	scan    = `iwlist wlan0 s`
-	quality = scan.match(/Quality=(\d+\/\d+).*?ESSID:"#{Regexp.escape(essid)}"/ms)[1]
-
-	if essid =~ /ravenna/i
-		essid = "???"
+	essid  = state.match(/SSID: (.*?)$/)[1]
+	signal = state.match(/signal: (.*?) dBm/)[1].to_i
+	state  = if signal >= -44
+		"\u{E0E6}"
+	elsif signal >= -67
+		"\u{E0E7}"
+	else
+		"\u{E0E8}"
 	end
 
-	if quality =~ /^(\d+)\/(\d+)$/
-		quality = (($1.to_f / $2.to_f) * 100).to_i
-	end
-
-	if quality
-		wrap "#{essid}\005{-}\005{1}|\005{b15}#{quality}%"
+	if signal
+		wrap "#{state} #{essid}"
 	end
 end
 
 backtick :battery, every: 5.seconds do
-	state = `acpitool -B`
+	state = `upower -i /org/freedesktop/UPower/devices/battery_BAT0`
 
-	next if state =~ /100\.0%/
+	next if state =~ /percentage:\s*100%/
 
-	current = state.match(/([^\s]+%.*)$/)[1].sub(/, /, "\005{-}\005{1}|\005{b15}")
+	percentage = state.match(/percentage:\s*(\d+)%/)[1].to_i
 
-	if state.match(/discharging/i)
-		wrap "\005{-}\005{1}v|\005{b15}#{current}"
+	if remaining = state.match(/time to empty:\s*([^\s].+)$/)[1] rescue nil
+		state = if percentage <= 15
+			"\005{-b 15;1}\u{E0E5}"
+		elsif percentage <= 20
+			"\005{-b 15}\u{E0E5}"
+		elsif percentage <= 40
+			"\005{-b 15}\u{E0E4}"
+		elsif percentage <= 60
+			"\005{-b 15}\u{E0E3}"
+		elsif percentage <= 80
+			"\005{-b 15}\u{E0E2}"
+		else
+			"\005{-b 15}\u{E0E1}"
+		end
+
+		wrap "\005{-}#{state}\005{b15} #{remaining}"
 	else
-		wrap "^\005{-}\005{1}|\005{b15}#{current}"
+		wrap "\005{-}\005{15}\u{E0E0}\005{b} #{percentage}%"
 	end
 end
 
-backtick  :time, every: second do
-	wrap(Time.now.strftime('%a %D %T')).rstrip
+backtick :time, every: second do
+	now   = Time.now
+	style = ''
+
+#	if now.sec % 10 >= 5
+#		now   = now.utc - (5 * 60 * 60)
+#		style = "\005{ub15}"
+#	end
+
+	wrap(style + now.strftime('%a %Y-%m-%d %T')).rstrip
 end
