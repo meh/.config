@@ -1,28 +1,11 @@
 # Xft config
 Xft.dpi:       96
-Xft.hinting:   1
-Xft.hintstyle: hintfull
+Xft.autohint:  0
+Xft.hinting:   true
+Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
-Xft.antialias: 0
+Xft.antialias: true
 Xft.rgba:      rgb
-
-# xscreensaver
-xscreensaver.Dialog.foreground:         #ffffff
-xscreensaver.Dialog.background:         #000000
-xscreensaver.Dialog.topShadowColor:     #000000
-xscreensaver.Dialog.bottomShadowColor:  #000000
-xscreensaver.Dialog.Button.foreground:  #000000
-xscreensaver.Dialog.Button.background:  #b21818
-
-xscreensaver.Dialog.text.foreground:     #ffffff
-xscreensaver.Dialog.text.background:     #b21818
-xscreensaver.Dialog.internalBorderWidth: 36
-xscreensaver.Dialog.borderWidth:         1
-xscreensaver.Dialog.shadowThickness:     2
-
-xscreensaver.passwd.thermometer.foreground: #b21818
-xscreensaver.passwd.thermometer.background: #000000
-xscreensaver.passwd.thermometer.width:      2
 
 # URxvt config
 URxvt*iso14755:          false
@@ -46,12 +29,12 @@ URxvt*scrollTtyKeypress: true
 URxvt*font: xft:GohuFont:style=Regular:antialias=false, \
             xft:Kochi Gothic:style=Regular:antialias=false, \
             xft:Baekmuk Gulim:style=Regular:antialias=true, \
-            xft:Verdana:style=Regular:antialias=false
+            xft:Noto Sans:style=Regular:antialias=false
 
 URxvt*boldFont: xft:GohuFont:style=Bold:antialias=false, \
                 xft:Kochi Gothic:style=Regular:antialias=false, \
                 xft:Baekmuk Gulim:style=Regular:antialias=true, \
-                xft:Verdana:style=Bold:antialias=false
+                xft:Noto Sans:style=Bold:antialias=false
 
 URxvt*background:     rgba:0000/0000/0000/dddd
 URxvt*foreground:     gray
@@ -84,20 +67,20 @@ URxvt*matcher.button:      1
 URxvt*matcher.pattern.1:   \\b(mailto|http|https|ftp|file):/*[[:^space:]]+\\.[[:^space:]]*
 URxvt*matcher.pattern.2:   \\bwww\\.[[:^space:]]+\\.[[:^space:]]*
 
-huge.font:     xft:monospace:size=16:antialias=false, xft:Verdana:antialias=false
-huge.boldFont: xft:monospace:bold:size=16:antialias=false, xft:Verdana:bold:antialias=false
+huge.font:     xft:monospace:size=16:antialias=true
+huge.boldFont: xft:monospace:bold:size=16:antialias=true
 
 first.transparent:    true
-first.shading:        15
+first.shading:        35
 first.internalBorder: 1
 
 second.transparent:    true
-second.shading:        15
+second.shading:        35
 second.internalBorder: 1
 
 bottom.transparent:    true
-bottom.shading:        15
+bottom.shading:        35
 bottom.internalBorder: 1
 
 coed.transparent: true
-coed.shading:     15
+coed.shading:     35
