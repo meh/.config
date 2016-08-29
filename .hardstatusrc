@@ -1,5 +1,4 @@
 require 'json'
-require 'socket'
 require 'timeout'
 
 left  '#{start}#{irssi}#{email}#{hackers}'
@@ -28,11 +27,13 @@ backtick :email, every: 5.seconds do
 		next wrap "\u{E0ED} \005{b15}..."
 	end
 
-	socket = TCPSocket.new('localhost', '9001')
-	socket.puts '* list unread'
-
-	notifications = JSON.parse(socket.gets)
-	socket.close
+	notifications = JSON.parse(File.read(File.expand_path('~/.mutt/state')))
+		.select {|path, _|
+			ENV['POSTINO'].split(/\s*;\s*/).include?(File.basename(path)) }
+		.select {|_, state|
+			state['total'] != state['seen'] }
+		.map {|path, _|
+			File.basename(path) }
 
 	unless notifications.empty?
 		wrap "\u{E0ED} " + notifications.map {|name|
@@ -117,7 +118,7 @@ backtick :battery, every: 5.seconds do
 
 		wrap "\005{-}#{state}\005{b15} #{remaining}"
 	else
-		wrap "\005{-}\005{15}\u{E0E0}\005{b} #{percentage}%"
+		wrap "\005{-}\005{15}\u{E0E0}\005{b15} #{percentage}%"
 	end
 end
 
