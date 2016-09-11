@@ -3,7 +3,7 @@ zstyle ':zoppo:path' plugins "$HOME/projects/zoppo" "$HOME/projects/zoppo/plugin
 zstyle ':zoppo:path' prompts "$HOME/projects/zoppo/prompts"
 
 # set editor mode to 'emacs' or 'vi'
-zstyle ':zoppo:plugin:editor' mode 'emacs'
+zstyle ':zoppo:plugin:editor' mode 'vi'
 
 # autoconvert .... to ../..
 zstyle ':zoppo:plugin:editor' dot-expansion 'no'
@@ -17,16 +17,14 @@ zstyle ':zoppo:*:*' color 'yes'
 # plugins to load
 zstyle ':zoppo:load' plugins \
   'syntax-highlight' 'completion' 'history-substring-search' 'agent' 'utility' 'X' \
-  'ruby' 'haskell' 'archive' 'sudo'
-
-# sudo
-zstyle ':zoppo:plugin:sudo' environments 'arch' 'utils' 'system' 'editors'
+  'ruby' 'haskell' 'archive'
 
 # X
-zstyle ':zoppo:plugin:X:screen' saver 'yes'
+zstyle ':zoppo:plugin:X:screen' saver 'no'
 
-zstyle ':zoppo:plugin:X:keyboard' language 'it'
+zstyle ':zoppo:plugin:X:keyboard' language 'gb'
 zstyle ':zoppo:plugin:X:keyboard' input 'ibus'
+zstyle ':zoppo:plugin:X:keyboard' option 'caps:swapescape'
 zstyle ':zoppo:plugin:X:keyboard' auto-repeat '250 30'
 
 zstyle ':zoppo:plugin:X:mouse' unclutter '1'
@@ -38,7 +36,32 @@ zstyle ':zoppo:plugin:agent:ssh' enable yes
 
 # set the prompt theme to load.
 zstyle ':zoppo' prompt 'borra' 'darkblood'
-zstyle ':zoppo:prompt:borra' plugins 'userhost' 'pts' 'meh-vcs-info' 'return'
+zstyle ':zoppo:prompt:borra' prompt '%F{red}[%F{white}%B%D{%H:%M}%b%F{red}]$(+borra-vi)%f '
+zstyle ':zoppo:prompt:borra' plugins 'path' 'meh-vcs-info' 'return'
+
+function borra-refresh {
+  emulate -L zsh
+  zmodload -i zsh/sched
+
+  # Remove existing event, so that multiple calls to
+  # "schedprompt" work OK.  (You could put one in precmd to push
+  # the timer 30 seconds into the future, for example.)
+  integer i=${"${(@)zsh_scheduled_events#*:*:}"[(I)borra-refresh]}
+  (( i )) && sched -$i
+
+  # Test that zle is running before calling the widget (recommended
+  # to avoid error messages).
+  # Otherwise it updates on entry to zle, so there's no loss.
+  zle && zle reset-prompt
+
+  # This ensures we're not too far off the start of the minute
+  sched +"$((60 - $(date +'%S')))" borra-refresh
+}
+borra-refresh
+
+function +borra-path {
+  print -P '%$((COLUMNS / 2))<...<%~%<<'
+}
 
 function +borra-meh-vcs-info {
   local res=""
@@ -77,13 +100,21 @@ function +borra-meh-vcs-info {
 }
 
 zstyle ':vcs_info:*' formats '%c%u%b'
-zstyle ':vcs_info:*' unstagedstr '%F{yellow}%f '
-zstyle ':vcs_info:*' stagedstr '%F{green}%f '
+zstyle ':vcs_info:*' unstagedstr '%F{yellow}%f %F{white}%B'
+zstyle ':vcs_info:*' stagedstr '%F{green}%f %F{white}%B'
 zstyle ':vcs_info:*+set-message:*' hooks 'git-st2'
 
 function +vi-git-st2 {
   if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
-    hook_com[unstaged]='%F{red}%f '
+    hook_com[unstaged]='%F{red}%f %F{white}%B'
+  fi
+}
+
+function +borra-vi {
+  if [[ $editor_info[keymap] == 'vicmd' ]]; then
+    print "<"
+  else
+    print ">"
   fi
 }
 
@@ -92,5 +123,8 @@ zstyle ':zoppo:plugin:history-substring-search:colors' not-found 'bg=red,fg=whit
 
 zstyle ':zoppo:plugin:utility:ls' colors 'no=00:fi=00:rs=0:di=01;37:ln=04;37:mh=00:pi=04;31:so=01;07;40;37:do=01;07;40;37:bd=01;30:cd=01;30:or=01;05;37;41:mi=31:su=30;41:sg=30;41:ca=00:tw=07;01;41;37:ow=01;37;41:st=04;01;37:ex=31:'
 zstyle ':zoppo:plugin:utility:grep' colors 'ms=1;37:fn=0;31:se=1;30'
+zstyle ':zoppo:plugin:utility:fork' programs \
+  'firefox' 'eog' 'ida' 'mupdf' 'uzbl-browser' 'eog'
+
 
 # vim: ft=zsh sts=2 ts=2 sw=2 et fdm=marker fmr={{{,}}}
