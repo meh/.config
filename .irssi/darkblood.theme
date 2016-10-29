@@ -59,7 +59,7 @@ replaces = { "[" = "%r$0%n"; "]" = "%r$0%n"; };
 # overloaded formats
 formats = {
   "fe-common/core" = {
-    pubmsg = "{pubmsgnick $2 {pubnick \00313$0}}$1";
+    pubmsg = "{pubmsgnick $2 {pubnick $nickcolor$0}}$1";
     servertag = "[%W%_$0%_] ";
   };
 
@@ -80,7 +80,7 @@ abstracts = {
   timestamp = "%K$*%N";
 
   # any kind of text that needs hilighting, default is to bold
-  hilight = "%W%_$*%_%n";
+  hilight = "%_$*%_";
 
   # any kind of error message, default is bright red
   error = "%W%_%1$*%N";
@@ -258,7 +258,7 @@ abstracts = {
 
   # default background for all statusbars. You can also give
   # the default foreground color for statusbar items.
-  sb_background = "%n";
+  sb_background = "%W";
 
   # default backround for "default" statusbar group
   #sb_default_bg = "%4";
@@ -283,7 +283,7 @@ abstracts = {
 
   sb = "%N%r[%W%_$*%N%r]%N ";
   sbr = " %N%r[%W%_$*%N%r]%N";
-  sbmode = " %_%r+%n%_$*";
+  sbmode = " %_%r+%W%_$*";
   sbaway = " zZzZ";
   sbservertag = "$0";
   sbnickmode = "$0";
