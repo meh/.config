@@ -36,7 +36,7 @@ zstyle ':zoppo:plugin:agent:ssh' enable yes
 
 # set the prompt theme to load.
 zstyle ':zoppo' prompt 'borra' 'darkblood'
-zstyle ':zoppo:prompt:borra' prompt '%F{red}[%F{white}%B%D{%H:%M}%b%F{red}]$(+borra-vi)%f '
+zstyle ':zoppo:prompt:borra' prompt '%F{red}[%F{255}%B%D{%H:%M}%b%F{red}]$(+borra-vi)%f '
 zstyle ':zoppo:prompt:borra' plugins 'path' 'meh-vcs-info' 'return'
 
 function borra-refresh {
@@ -60,7 +60,7 @@ function borra-refresh {
 borra-refresh
 
 function +borra-path {
-  print -P '%$((COLUMNS / 2))<...<%~%<<'
+  print -P '%F{255}%$((COLUMNS / 2))<...<%~%<<'
 }
 
 function +borra-meh-vcs-info {
@@ -100,13 +100,13 @@ function +borra-meh-vcs-info {
 }
 
 zstyle ':vcs_info:*' formats '%c%u%b'
-zstyle ':vcs_info:*' unstagedstr '%F{yellow}%f %F{white}%B'
-zstyle ':vcs_info:*' stagedstr '%F{green}%f %F{white}%B'
+zstyle ':vcs_info:*' unstagedstr '%F{yellow}%f %F{255}%B'
+zstyle ':vcs_info:*' stagedstr '%F{green}%f %F{255}%B'
 zstyle ':vcs_info:*+set-message:*' hooks 'git-st2'
 
 function +vi-git-st2 {
   if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
-    hook_com[unstaged]='%F{red}%f %F{white}%B'
+    hook_com[unstaged]='%F{red}%f %F{255}%B'
   fi
 }
 
@@ -118,13 +118,12 @@ function +borra-vi {
   fi
 }
 
-zstyle ':zoppo:plugin:history-substring-search:colors' found 'bg=green,fg=white,bold'
-zstyle ':zoppo:plugin:history-substring-search:colors' not-found 'bg=red,fg=white,bold'
+zstyle ':zoppo:plugin:history-substring-search:colors' found 'bg=green,fg=255,bold'
+zstyle ':zoppo:plugin:history-substring-search:colors' not-found 'bg=red,fg=255,bold'
 
 zstyle ':zoppo:plugin:utility:ls' colors 'no=00:fi=00:rs=0:di=01;37:ln=04;37:mh=00:pi=04;31:so=01;07;40;37:do=01;07;40;37:bd=01;30:cd=01;30:or=01;05;37;41:mi=31:su=30;41:sg=30;41:ca=00:tw=07;01;41;37:ow=01;37;41:st=04;01;37:ex=31:'
 zstyle ':zoppo:plugin:utility:grep' colors 'ms=1;37:fn=0;31:se=1;30'
 zstyle ':zoppo:plugin:utility:fork' programs \
   'firefox' 'eog' 'ida' 'mupdf' 'uzbl-browser' 'eog'
-
 
 # vim: ft=zsh sts=2 ts=2 sw=2 et fdm=marker fmr={{{,}}}

@@ -27,24 +27,23 @@ unset path_file
 
 # set the list of directories that Zsh searches for programs
 path=(
-  ~/bin
+  ~/.bin
   /usr/lib/cw
   /usr/bin/vendor_perl
   /usr/bin/core_perl
-  ~/.gem/ruby/2.0.0/bin
-  ~/.gem/ruby/1.9.1/bin
-  ~/.gem/ruby/svn/bin
-  ~/.gem/jruby/1.9/bin
-  ~/.gem/rbx/1.8/bin
-  ~/.gem/rbx/1.9/bin
+  ~/.gem/ruby/2.3/bin
   ~/projects/external/emscripten
   ~/.vim/bin
   ~/.cabal/bin
+  ~/.cargo/bin
+  ~/.multirust/toolchains/nightly/cargo/bin
+  ~/.raspi/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
   /{bin,sbin}
   /opt/android-sdk/tools
   /opt/android-sdk/platform-tools
+  /opt/android-ndk
   /opt/vmware/bin
   $path
 )
@@ -102,18 +101,16 @@ fi
 
 # Other Stuff {{{
 export NODE_PATH="/usr/lib/node_modules"
-
-export MBOX_DAEMON_DIR="${HOME}/mail"
-export MBOX_DAEMON_BOXES="inbox; github; twitter; tumblr; mozilla; rss; rss-nsfw; rss-webcomic; rss-kernel; danger; bitlbee; d-bugzilla; travis"
-export MBOX_DAEMON_EVERY=120
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+export RUSTFLAGS="-Ctarget-cpu=native"
 
 export INTEL_BATCH=1
-export OOO_FORCE_DESKTOP=gnome
 export WINEDEBUG=-all
 
 export GTK_IM_MODULE='ibus'
 export QT_IM_MODULE='ibus'
 export XMODIFIERS=@im='ibus'
+export XDG_CURRENT_DESKTOP=GNOME
 
 # Android
 export ANDROID_HOME=/opt/android-sdk
@@ -122,7 +119,12 @@ export ANDROID_NDK_HOME=/opt/android-ndk
 # Ruby
 export RBXOPT="-Xrbc.db=$HOME/.rbc.db -X19"
 export JRUBY_OPTS="--1.9"
-export RI="-d /usr/share/ri/2.0.0/system"
+export RI="-d /usr/share/ri/2.1.0/system"
+
+export RUST_NEW_ERROR_FORMAT=true
+
+export GPG_TTY="$(tty)"
+unset TERMINFO
 
 umask 077
 # }}}
