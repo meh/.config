@@ -4,7 +4,7 @@ hi Disabled color: red; background: black;
 hi Title    color: white; background: #b21818;
 hi Normal   color: white; background: black;
 
-hi Help         color: white; background: black; font-family: Monospace;
+hi Help         color: white; background: black; font-family: GohuFont;
 hi HelpArg      color: red;
 hi -a HelpHead  color: #b21818;
 hi -a HelpEx    color: #b21818 !important;
@@ -29,15 +29,15 @@ hi Hint         color: white !important; background: #b21818 !important; padding
 hi HintElem     color: white !important; background: black !important; !important;
 hi HintActive   color: white !important; background: #b21818 !important;
 
-hi StatusLine           color: white;   background: black;
+hi StatusLine   color: white;   background: black; font-size: 11px;
 
-hi CmdLine      color: white;   background: black;
-hi CmdOutput    color: white;   background: black;
+hi CmdLine      color: white;   background: black; font-size: 11px;
+hi CmdOutput    color: white;   background: black; font-size: 11px;
 
 hi NonText      color: white;   background: black;
 
 hi ModeMsg      color: white;   background: black;
-hi ErrorMsg     color: white;   background: #b21818;
+hi ErrorMsg     color: white;   background: #b21818; font-size: 11px;
 hi WarningMsg   color: white;   background: #b21818;
 hi InfoMsg      color: white;   background: black; text-decoration: underline;
 hi MoreMsg      color: white;   background: #b21818;

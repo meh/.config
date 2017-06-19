@@ -1,9 +1,9 @@
-set editor="urxvt -e vim -R -c 'set wrap nonu'"
+set editor="cancer -e vim -R -c 'set wrap nonu'"
+set defsearch=g
 set noautocomplete
 set gui=none
 set noscrollbars
-set defsearch=ddg
-let mapleader="ò"
+let mapleader=";"
 
 colorscheme darkblood
 
@@ -16,9 +16,6 @@ map <C-S-m> :set gui=nomenu,nonavigation,notabs<CR>
 map <C-a> :set gui=addons<CR>
 map <C-S-a> :set gui=noaddons<CR>
 
-map <C-c> :set! browser.cache.disk.enable=false<CR>:set! browser.cache.memory.enable=false<CR>
-map <C-S-c> :set! browser.cache.disk.enable=true<CR>:set! browser.cache.memory.enable=true<CR>
-
 map <C-j> :set! javascript.enabled=false<CR>
 map <C-S-j> :set! javascript.enabled=true<CR>
 
@@ -26,7 +23,6 @@ map <BS> :back<CR>
 map <Leader>n :nohlsearch<CR>
 
 map <C-s> :stylish toggle<CR>
-map <C-S-s> :stylish toggle<CR>
 
 map <Leader>L :readability later<CR>
 map <Leader>N :readability now<CR>
@@ -37,7 +33,7 @@ command! -nargs=0 -description="Sync now"     sync emenu Tools.Sync Now
 
 map <C-Right> :tabnext<CR>
 map <C-Left>  :tabprev<CR>
-map <C-Up> :tabnext<CR>
+map <C-Up>    :tabnext<CR>
 map <C-Down>  :tabprev<CR>
 map <C-H>     :tabprev<CR>
 map <C-L>     :tabnext<CR>
