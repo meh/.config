@@ -124,6 +124,6 @@ zstyle ':zoppo:plugin:history-substring-search:colors' not-found 'bg=red,fg=255,
 zstyle ':zoppo:plugin:utility:ls' colors 'no=00:fi=00:rs=0:di=01;37:ln=04;37:mh=00:pi=04;31:so=01;07;40;37:do=01;07;40;37:bd=01;30:cd=01;30:or=01;05;37;41:mi=31:su=30;41:sg=30;41:ca=00:tw=07;01;41;37:ow=01;37;41:st=04;01;37:ex=31:'
 zstyle ':zoppo:plugin:utility:grep' colors 'ms=1;37:fn=0;31:se=1;30'
 zstyle ':zoppo:plugin:utility:fork' programs \
-  'firefox' 'eog' 'ida' 'mupdf' 'uzbl-browser' 'eog'
+  'firefox' 'eog' 'ida' 'mupdf-x11' 'uzbl-browser' 'eog'
 
 # vim: ft=zsh sts=2 ts=2 sw=2 et fdm=marker fmr={{{,}}}

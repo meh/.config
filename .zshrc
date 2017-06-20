@@ -10,6 +10,8 @@ alias screenex="screen -a -c ~/.screenex"
 alias stream="livestreamer --player-no-close -p mpv"
 alias ida="ida -debug"
 alias previ='vim -c "set background=light | colorscheme tomorrow | set statusline=%f\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)"'
+alias rust-musl-builder='docker run --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
+alias mupdf="mupdf-x11"
 
 function run {
 	${=@} &> /dev/null &
@@ -64,6 +66,18 @@ function pdigest_all {
 		pdigest
 		cd $ROOT
 	done
+}
+
+function codi {
+  local syntax="${1:-ruby}"
+
+  vim -c \
+    "let g:startify_disable_at_vimenter = 1 |\
+    set bt=nofile ls=0 noru nonu nornu |\
+    hi ColorColumn ctermbg=NONE |\
+    hi VertSplit ctermbg=NONE |\
+    hi NonText ctermfg=0 |\
+    Codi $syntax"
 }
 
 zmodload zsh/pcre
@@ -166,7 +180,7 @@ source ~/.zshrc.private
 
 #[[ -z `pgrep herpes` ]] && herpes ~/.herpesrc &> /dev/null &!
 
-[[ -z `pgrep -f "torchatd -t$"` ]] && torchatd -t &> /dev/null &!
+#[[ -z `pgrep -f "torchatd -t$"` ]] && torchatd -t &> /dev/null &!
 
 #[[ -z `pgrep -f "torchatd -t -p anon -l :11100$"` ]] && torchatd -t -p anon -l :11100 &> /dev/null &!
 

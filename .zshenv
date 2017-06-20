@@ -28,10 +28,13 @@ unset path_file
 # set the list of directories that Zsh searches for programs
 path=(
   ~/.bin
+  ~/.local/bin
+  ~/.latex/2016/bin/x86_64-linux
   /usr/lib/cw
   /usr/bin/vendor_perl
   /usr/bin/core_perl
-  ~/.gem/ruby/2.3/bin
+  ~/.gem/ruby/2.4/bhn
+  ~/.go/bin
   ~/projects/external/emscripten
   ~/.vim/bin
   ~/.cabal/bin
@@ -45,6 +48,7 @@ path=(
   /opt/android-sdk/platform-tools
   /opt/android-ndk
   /opt/vmware/bin
+  /opt/neo4j/bin
   $path
 )
 
@@ -101,16 +105,17 @@ fi
 
 # Other Stuff {{{
 export NODE_PATH="/usr/lib/node_modules"
+export GOPATH="$HOME/.go"
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 export RUSTFLAGS="-Ctarget-cpu=native"
 
 export INTEL_BATCH=1
 export WINEDEBUG=-all
 
-export GTK_IM_MODULE='ibus'
-export QT_IM_MODULE='ibus'
-export XMODIFIERS=@im='ibus'
-export XDG_CURRENT_DESKTOP=GNOME
+#export GTK_IM_MODULE='ibus'
+#export QT_IM_MODULE='ibus'
+#export XMODIFIERS=@im='ibus'
+#export XDG_CURRENT_DESKTOP=GNOME
 
 # Android
 export ANDROID_HOME=/opt/android-sdk
@@ -125,6 +130,11 @@ export RUST_NEW_ERROR_FORMAT=true
 
 export GPG_TTY="$(tty)"
 unset TERMINFO
+
+export TEXDIR="$HOME/.latex"
+export TEXMFHOME="$HOME/.latex"
+export TEXMFVAR="$HOME/.latex/texmf-var"
+export TEXMFCONFIG="$HOME/.latex/texmf-config"
 
 umask 077
 # }}}
