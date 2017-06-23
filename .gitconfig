@@ -1,9 +1,14 @@
 [user]
-	email = meh@paranoici.org
+	email = meh@schizofreni.co
 	name = meh.
 [core]
 	excludesfile = ~/.cvsignore
 	autocrlf = false
 [color]
-	status = auto
-	branch = auto
+	ui     = on
+[push]
+	default = simple
+[alias]
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+[advice]
+	statusHints = false
