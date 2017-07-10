@@ -1,0 +1,12 @@
+#! /usr/bin/env ruby
+require 'rest-client'
+require 'json'
+
+res = RestClient.post('http://www.hnng.moe/upload_d.php',
+	file: File.new(ARGV[0]))
+
+if res.code == 200
+	data = JSON.parse(res.to_str)
+
+	puts data['url']
+end
