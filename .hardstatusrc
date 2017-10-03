@@ -22,8 +22,8 @@ backtick :irssi, every: second do
 	end
 end
 
-backtick :email, every: 5.seconds do
-	unless `ps aux | grep fetchmail | grep -v grep`.strip.empty?
+backtick :email, every: second do
+	unless `ps aux | grep fetchmail | rg -v "grep|postino"`.strip.empty?
 		next wrap "\u{E0ED} \005{b15}..."
 	end
 
@@ -46,14 +46,16 @@ backtick :hackers, every: 5.seconds do
 end
 
 backtick :sound, every: 1.seconds do
-	status = `pulseaudio-ctl full-status`.split
-	icon   = if status[1] == "yes"
+	out  = `pacmd list-sinks`
+	sink = out.split(/^  [ *] /)[1 .. -1][out.match(/^  \* .*?(\d+)/)[1].to_i]
+
+	icon = if sink.match(/muted: (yes|no)/)[1] == "yes"
 		"\u{E0EC}"
 	else
 		"\u{E0EB}"
 	end
 
-	wrap "#{icon} #{status[0]}%"
+	wrap "#{icon} #{sink.match(/volume: .*?(\d+%)/)[1]}"
 end
 
 backtick :processor, every: 5.seconds do
@@ -63,7 +65,7 @@ backtick :processor, every: 5.seconds do
 end
 
 backtick :temperature, every: 5.seconds do
-	`sensors`.match(/Physical id 0:\s+\+([\d\-.]+)/) { |m|
+	`sensors`.match(/CPU:\s+\+([\d\-.]+)/) { |m|
 		temp = m[1].to_i
 
 		wrap(if temp >= 100
@@ -79,7 +81,7 @@ backtick :wireless, every: 5.seconds do
 
 	next unless state =~ /^Connected to /
 
-	essid  = state.match(/SSID: (.*?)$/)[1]
+	essid  = state.match(/SSID: (.*?)$/)[1].gsub(/\\x([0-9a-fA-F][0-9a-fA-F])/) { |s| s[2..-1].to_i(16).chr }
 	signal = state.match(/signal: (.*?) dBm/)[1].to_i
 	state  = if signal >= -44
 		"\u{E0E6}"
@@ -126,10 +128,10 @@ backtick :time, every: second do
 	now   = Time.now
 	style = ''
 
-#	if now.sec % 10 >= 5
-#		now   = now.utc - (5 * 60 * 60)
-#		style = "\005{ub15}"
-#	end
+	if now.sec % 10 >= 5
+		now   = now.utc - (4 * 60 * 60)
+		style = "\005{ub15}"
+	end
 
 	wrap(style + now.strftime('%a %Y-%m-%d %T')).rstrip
 end
