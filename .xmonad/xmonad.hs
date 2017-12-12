@@ -27,9 +27,17 @@ conf = desktopConfig
     }
 
 main = xmonad $ conf
+    -- Make workspaces per screen.
     `additionalKeys`
     [ ((m .|. modMask conf, k), windows $ onCurrentScreen f i)
     | (i, k) <- zip (workspaces' conf) [xK_1 .. xK_9]
+    , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+    ]
+
+    -- Reorder screens.
+    `additionalKeys`
+    [ ((m .|. modMask conf, k), screenWorkspace s >>= flip whenJust (windows . f))
+    | (k, s) <- zip [xK_w, xK_e, xK_r] [0, 2, 1]
     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
     ]
 
@@ -48,8 +56,7 @@ main = xmonad $ conf
     ]
 
     `removeKeysP`
-    [ "M-S-q"
-    ]
+    [ "M-S-q" ]
 
 data Tip a =
     Tip Rational Rational
